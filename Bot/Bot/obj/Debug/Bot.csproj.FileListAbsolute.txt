@@ -1,0 +1,10 @@
+C:\Users\sheitanko\Desktop\autotests\Bot\Bot\bin\Debug\Bot.exe.config
+C:\Users\sheitanko\Desktop\autotests\Bot\Bot\bin\Debug\Bot.exe
+C:\Users\sheitanko\Desktop\autotests\Bot\Bot\bin\Debug\Bot.pdb
+C:\Users\sheitanko\Desktop\autotests\Bot\Bot\bin\Debug\Newtonsoft.Json.dll
+C:\Users\sheitanko\Desktop\autotests\Bot\Bot\bin\Debug\System.Runtime.InteropServices.RuntimeInformation.dll
+C:\Users\sheitanko\Desktop\autotests\Bot\Bot\bin\Debug\Telegram.Bot.dll
+C:\Users\sheitanko\Desktop\autotests\Bot\Bot\bin\Debug\Newtonsoft.Json.xml
+C:\Users\sheitanko\Desktop\autotests\Bot\Bot\obj\Debug\Bot.csprojResolveAssemblyReference.cache
+C:\Users\sheitanko\Desktop\autotests\Bot\Bot\obj\Debug\Bot.exe
+C:\Users\sheitanko\Desktop\autotests\Bot\Bot\obj\Debug\Bot.pdb
