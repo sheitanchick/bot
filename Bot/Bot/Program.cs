@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using Telegram.Bot.Types.InlineKeyboardButtons;
 using Telegram.Bot.Types.InlineQueryResults;
 using Telegram.Bot.Types.InputMessageContents;
 using Telegram.Bot.Types.ReplyMarkups;
@@ -19,7 +20,7 @@ namespace Telegram.Bot.Examples.Echo
 
         static void Main(string[] args)
         {
-            //Bot.OnCallbackQuery += BotOnCallbackQueryReceived;
+            Bot.OnCallbackQuery += BotOnCallbackQueryReceived;
             Bot.OnMessage += BotOnMessageReceived;
             Bot.OnMessageEdited += BotOnMessageReceived;
             //Bot.OnInlineQuery += BotOnInlineQueryReceived;
@@ -44,22 +45,40 @@ namespace Telegram.Bot.Examples.Echo
         {
             Console.WriteLine($"Received choosen inline result: {chosenInlineResultEventArgs.ChosenInlineResult.ResultId}");
         }
-
+        
 
         private static async void BotOnMessageReceived(object sender, MessageEventArgs messageEventArgs)
         {
             var message = messageEventArgs.Message;
 
+            var keyboard = new ReplyKeyboardMarkup(
+                new KeyboardButton[]
+                {
+                    new KeyboardButton("Bitch!!!"),
+                    new KeyboardButton("Fuck!!!")
+                }
+                );
+
             if (message == null || message.Type != MessageType.TextMessage) return;
 
-            if (message.Text.StartsWith("ку")) // send inline keyboard
+            if (message.Text.StartsWith("ку")) 
             {
                 //await Task.Delay(500); // simulate longer running task
-                await Bot.SendTextMessageAsync(message.Chat.Id, "Не кукай мне тут");
+                await Bot.SendTextMessageAsync(message.Chat.Id, "Не кукай мне тут", replyMarkup: keyboard);
+                
             }
-
+            FileToSend file = new FileToSend(new Uri("http://bm.img.com.ua/nxs/img/prikol/images/large/0/0/307600.jpg"));
+            if (message.Text == "Bitch!!!")
+                await Bot.SendPhotoAsync(message.Chat.Id, file);
             if (message.From.LastName == "Nekrash")
                 await Bot.SendTextMessageAsync(message.Chat.Id, "Тебя, бля не спрашивали ска");
+            if (message.Text == "Fuck!!!")
+                await Bot.SendTextMessageAsync(message.Chat.Id, "fuck yoou", replyMarkup: null);
+        }
+
+        private static async void BotOnCallbackQueryReceived(object sender, CallbackQueryEventArgs callbackQueryEventArgs)
+        {
+            Console.WriteLine(callbackQueryEventArgs.CallbackQuery);
         }
     }
 }
