@@ -17,11 +17,11 @@ namespace Telegram.Bot.Examples.Echo
     class Program
     {
         private static readonly TelegramBotClient Bot = new TelegramBotClient("436441359:AAE-7PmtkSzoOCzwfDJsEZDVNxq4YaXo97o");
-
         static void Main(string[] args)
         {
             Bot.OnCallbackQuery += BotOnCallbackQueryReceived;
             Bot.OnMessage += BotOnMessageReceived;
+            Bot.OnMessage += DoSomeStaff;
             Bot.OnMessageEdited += BotOnMessageReceived;
             //Bot.OnInlineQuery += BotOnInlineQueryReceived;
             Bot.OnInlineResultChosen += BotOnChosenInlineResultReceived;
@@ -45,8 +45,19 @@ namespace Telegram.Bot.Examples.Echo
         {
             Console.WriteLine($"Received choosen inline result: {chosenInlineResultEventArgs.ChosenInlineResult.ResultId}");
         }
-        
 
+        public static void DoSomeStaff(object sender, MessageEventArgs arg)
+        {
+            var messageq = arg.Message;
+            var key = new InlineKeyboardMarkup(new InlineKeyboardButton[]
+            {
+                new InlineKeyboardCallbackButton("hi", "by")
+            }
+        );
+            Bot.SendTextMessageAsync(messageq.Chat.Id, "Darov", replyMarkup: key);
+            Console.WriteLine(messageq.From.FirstName);
+            Console.WriteLine(sender.ToString());
+        }
         private static async void BotOnMessageReceived(object sender, MessageEventArgs messageEventArgs)
         {
             var message = messageEventArgs.Message;
@@ -54,30 +65,33 @@ namespace Telegram.Bot.Examples.Echo
             var keyboard = new ReplyKeyboardMarkup(
                 new KeyboardButton[]
                 {
-                    new KeyboardButton("Bitch!!!"),
-                    new KeyboardButton("Fuck!!!")
+                    new KeyboardButton("Bang!!!"),
+                    new KeyboardButton("Dang!!!")
                 }
                 );
 
             if (message == null || message.Type != MessageType.TextMessage) return;
 
-            if (message.Text.StartsWith("ку")) 
+            if (message.Text.StartsWith("ку"))
             {
                 //await Task.Delay(500); // simulate longer running task
-                await Bot.SendTextMessageAsync(message.Chat.Id, "Не кукай мне тут", replyMarkup: keyboard);
-                
+                await Bot.SendTextMessageAsync(message.Chat.Id, "<b>Не кукай мне тут</b>", replyMarkup: keyboard, parseMode: ParseMode.Html);
+
             }
             FileToSend file = new FileToSend(new Uri("http://bm.img.com.ua/nxs/img/prikol/images/large/0/0/307600.jpg"));
-            if (message.Text == "Bitch!!!")
+            if (message.Text == "Bang!!!")
                 await Bot.SendPhotoAsync(message.Chat.Id, file);
-            if (message.From.LastName == "Nekrash")
-                await Bot.SendTextMessageAsync(message.Chat.Id, "Тебя, бля не спрашивали ска");
-            if (message.Text == "Fuck!!!")
-                await Bot.SendTextMessageAsync(message.Chat.Id, "fuck yoou", replyMarkup: null);
+            if (message.From.LastName == "")
+                await Bot.SendTextMessageAsync(message.Chat.Id, "Тебя, не спрашивали");
+            if (message.Text == "Dang!!!")
+                await Bot.SendChatActionAsync(message.Chat.Id, ChatAction.Typing);
         }
 
         private static async void BotOnCallbackQueryReceived(object sender, CallbackQueryEventArgs callbackQueryEventArgs)
         {
+            var mes = callbackQueryEventArgs.CallbackQuery.Message;
+            if (callbackQueryEventArgs.CallbackQuery.Data == "by") Bot.SendTextMessageAsync(mes.Chat.Id, "yo");
+            //Bot.SendTextMessageAsync(mes.Chat.Id, "Dratuti");
             Console.WriteLine(callbackQueryEventArgs.CallbackQuery);
         }
     }
